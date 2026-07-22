@@ -37,6 +37,9 @@ dependencies:
   dio:
   pretty_dio_logger:
   go_router:
+  get_it:
+  dartz:
+  bloc:
 
 dev_dependencies:
   flutter_test:

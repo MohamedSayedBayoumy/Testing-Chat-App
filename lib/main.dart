@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'routes/pages.dart';
+import 'service/service_locator.dart';
 
-void main() {
+Future<void> main() async {
+  await DI.execute();
   runApp(const MyApp());
 }
 
@@ -11,9 +13,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: 'Chat App',
-      routerConfig: AppPages.router,
-    );
+    return MaterialApp.router(title: 'Chat App', routerConfig: AppPages.router);
   }
 }
