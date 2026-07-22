@@ -14,8 +14,6 @@ class ChatCubit extends Cubit<ChatState> {
 
   final ChatRepository chatRepository;
 
-  List<MessageModel> messages = [];
-
   GeminiRequestBody? requestBody;
 
   TextEditingController messageController = TextEditingController(text: "");
