@@ -1,4 +1,7 @@
+import 'package:chat_app/features/chat/cubit/chat_cubit.dart';
+import 'package:chat_app/service/service_locator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../features/chat/chat_screen.dart';
 import '../features/splash_screen.dart';
@@ -42,7 +45,10 @@ class AppPages {
       ),
       GoRoute(
         path: AppPaths.chat,
-        builder: (context, state) => const ChatScreen(),
+        builder: (context, state) => BlocProvider<ChatCubit>(
+          create: (context) => serviceLocator<ChatCubit>()..startListening(),
+          child: ChatScreen(),
+        ),
       ),
     ],
   );

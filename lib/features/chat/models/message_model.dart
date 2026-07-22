@@ -19,7 +19,7 @@ class MessageModel {
 }
 
 class PartModel {
-  final String? text;
+  String? text;
   final String? thoughtSignature;
 
   PartModel({required this.text, this.thoughtSignature});

@@ -39,7 +39,7 @@ dependencies:
   go_router:
   get_it:
   dartz:
-  bloc:
+  flutter_bloc:
 
 dev_dependencies:
   flutter_test:
