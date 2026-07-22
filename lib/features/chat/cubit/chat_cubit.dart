@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,7 +18,10 @@ class ChatCubit extends Cubit<ChatState> {
 
   GeminiRequestBody? requestBody;
 
-  TextEditingController messageController = TextEditingController();
+  TextEditingController messageController = TextEditingController(text: "");
+
+  StreamController<bool> sendMessageController =
+      StreamController<bool>.broadcast();
 
   MessageModel currentMessage = MessageModel(
     parts: [PartModel(text: '')],
@@ -25,9 +30,14 @@ class ChatCubit extends Cubit<ChatState> {
 
   void startListening() {
     messageController.addListener(() {
+      if (messageController.text.isEmpty) {
+        sendMessageController.add(false);
+      } else {
+        sendMessageController.add(true);
+      }
       currentMessage.parts![0].text = messageController.text;
     });
-   }
+  }
 
   void sendMessage() async {
     requestBody!.contents?.add(currentMessage);
