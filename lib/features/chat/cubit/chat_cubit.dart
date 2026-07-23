@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -45,13 +44,22 @@ class ChatCubit extends Cubit<ChatState> {
       emit(WaitingForResponse());
       return;
     }
+
     messages.add(
       MessageModel(
         parts: [PartModel(text: messageController.text)],
         role: "user",
       ),
     );
-    requestBody = GeminiRequestBody(contents: [messages.last]);
+
+    if (requestBody != null) {
+      if (requestBody!.contents!.length > 2) {
+        requestBody!.contents!.removeAt(0);
+      }
+      requestBody!.contents!.add(messages.last);
+    } else {
+      requestBody = GeminiRequestBody(contents: [messages.last]);
+    }
 
     String userMessage = messageController.text;
 
@@ -71,9 +79,12 @@ class ChatCubit extends Cubit<ChatState> {
 
         messages.add(responseMessage);
 
-        for (var messagePart in messages) {
-          log("Response: ${messagePart.toJson()}");
-        }
+        requestBody!.contents!.add(responseMessage);
+
+        // for (int i = 0; i < messages.length; i++) {
+        //   final messagePart = messages[i];
+        //   log("Response: ${messagePart.toJson()["role"]} - $i");
+        // }
 
         emit(MessageSended());
       },

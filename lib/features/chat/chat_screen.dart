@@ -28,6 +28,8 @@ class ChatScreen extends StatelessWidget {
               SnackBar(
                 content: Text((state).errorMessage),
                 backgroundColor: Colors.red.shade500,
+                behavior: SnackBarBehavior.floating,
+                showCloseIcon: true,
               ),
             );
           }

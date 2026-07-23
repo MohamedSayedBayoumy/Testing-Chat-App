@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -15,13 +16,24 @@ class MessagesListWidget extends StatelessWidget {
         cubit.state is MessageSending || cubit.state is WaitingForResponse;
 
     return ListView.builder(
+      reverse: true,
       padding: const EdgeInsets.fromLTRB(16, 20, 16, 120),
       itemCount: isLoading ? cubit.messages.length + 1 : cubit.messages.length,
       itemBuilder: (context, index) {
-        if (index == cubit.messages.length) {
-          return const CircularProgressIndicator.adaptive();
+        if (isLoading && index == 0) {
+          return const CircleAvatar(
+            backgroundColor: Colors.blue,
+            child: CircularProgressIndicator.adaptive(
+              backgroundColor: Colors.white,
+            ),
+          );
         }
-        return ChatBubble(message: cubit.messages[index]);
+
+        final messageIndex = isLoading ? index - 1 : index;
+
+        final reversedIndex = cubit.messages.length - 1 - messageIndex;
+
+        return ChatBubble(message: cubit.messages[reversedIndex]);
       },
     );
   }
