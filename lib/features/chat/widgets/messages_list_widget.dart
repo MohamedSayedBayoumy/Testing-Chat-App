@@ -11,10 +11,16 @@ class MessagesListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final cubit = context.watch<ChatCubit>();
 
+    final isLoading =
+        cubit.state is MessageSending || cubit.state is WaitingForResponse;
+
     return ListView.builder(
       padding: const EdgeInsets.fromLTRB(16, 20, 16, 120),
-      itemCount: cubit.messages.length,
+      itemCount: isLoading ? cubit.messages.length + 1 : cubit.messages.length,
       itemBuilder: (context, index) {
+        if (index == cubit.messages.length) {
+          return const CircularProgressIndicator.adaptive();
+        }
         return ChatBubble(message: cubit.messages[index]);
       },
     );

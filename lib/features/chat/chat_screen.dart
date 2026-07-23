@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'cubit/chat_cubit.dart';
 import 'widgets/app_bar_widget.dart';
-import 'widgets/loading_view_widget.dart';
 import 'widgets/messages_list_widget.dart';
 import 'widgets/text_input_widget.dart';
 
@@ -36,13 +35,6 @@ class ChatScreen extends StatelessWidget {
                 right: 16,
                 bottom: 50,
                 child: TextInputWidget(),
-              ),
-
-              Positioned(
-                left: 16,
-                right: 16,
-                bottom: 120,
-                child: LoadingViewWidget(),
               ),
             ],
           );
