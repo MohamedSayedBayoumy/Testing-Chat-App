@@ -64,7 +64,7 @@ class ChatCubit extends Cubit<ChatState> {
         messages.removeLast();
         messageController.text = userMessage;
 
-        emit(MessageFailed());
+        emit(MessageFailed(failure.failureMessage!));
       },
       (response) {
         final responseMessage = response.candidates!.first.content!;

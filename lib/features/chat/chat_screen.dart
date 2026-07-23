@@ -23,6 +23,13 @@ class ChatScreen extends StatelessWidget {
                 backgroundColor: Colors.red.shade500,
               ),
             );
+          } else if (state is MessageFailed) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text((state).errorMessage),
+                backgroundColor: Colors.red.shade500,
+              ),
+            );
           }
         },
         builder: (context, state) {
