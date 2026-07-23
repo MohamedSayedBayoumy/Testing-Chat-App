@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -49,7 +48,6 @@ class TextInputWidget extends StatelessWidget {
           StreamBuilder(
             stream: cubit.sendMessageController.stream,
             builder: (context, snapshot) {
-              log("message??? ${snapshot.data}");
               return IconButton(
                 icon: Icon(
                   Icons.send,
@@ -59,7 +57,7 @@ class TextInputWidget extends StatelessWidget {
                   size: 28,
                 ),
                 onPressed: () {
-                  if (snapshot.hasData && snapshot.data!) {
+                  if (snapshot.data == true) {
                     cubit.sendMessage();
                   }
                 },

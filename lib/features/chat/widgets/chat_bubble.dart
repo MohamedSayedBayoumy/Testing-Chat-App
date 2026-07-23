@@ -39,31 +39,18 @@ class ChatBubble extends StatelessWidget {
             mainAxisAlignment: isUser
                 ? MainAxisAlignment.end
                 : MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               if (!isUser) // عرض أيقونة البوت بجانب رسائل البوت فقط
                 Padding(
-                  padding: const EdgeInsets.only(top: 8.0, right: 10.0),
-                  child: Container(
-                    height: 28,
-                    width: 28,
-                    decoration: BoxDecoration(
-                      color: Colors.transparent, // اللون الخلفي شفاف هنا
-                    ),
-                    child: Image.asset(
-                      'assets/bot_bubble.png', // هنا هتحط صورة أيقونة البوت للفقاعات
-                      height: 20,
-                      width: 20,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Icon(
-                          Icons.roundabout_left_rounded,
-                          size: 20,
-                          color: Color(0xFF327CF2),
-                        );
-                      },
-                    ),
+                  padding: const EdgeInsetsDirectional.only(end: 10),
+                  child: Icon(
+                    Icons.align_horizontal_left_outlined,
+                    size: 20,
+                    color: Color(0xFF327CF2),
                   ),
                 ),
+
               Container(
                 constraints: BoxConstraints(
                   maxWidth: MediaQuery.of(context).size.width * 0.72,

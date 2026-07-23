@@ -1,9 +1,10 @@
-import 'package:chat_app/features/chat/cubit/chat_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'cubit/chat_cubit.dart';
 import 'widgets/app_bar_widget.dart';
-import 'widgets/chat_bubble.dart';
+import 'widgets/loading_view_widget.dart';
+import 'widgets/messages_list_widget.dart';
 import 'widgets/text_input_widget.dart';
 
 class ChatScreen extends StatelessWidget {
@@ -15,25 +16,34 @@ class ChatScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: CustomChatAppBar(),
       body: BlocConsumer<ChatCubit, ChatState>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          if (state is WaitingForResponse) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text("Please wait, your message is being sent..."),
+                backgroundColor: Colors.red,
+              ),
+            );
+          }
+        },
         builder: (context, state) {
-          final cubit = context.watch<ChatCubit>();
           return Stack(
             children: [
-              Positioned.fill(
-                child: ListView.builder(
-                  padding: const EdgeInsets.fromLTRB(16, 20, 16, 10),
-                  itemCount: cubit.messages.length,
-                  itemBuilder: (context, index) {
-                    return ChatBubble(message: cubit.messages[index]);
-                  },
-                ),
-              ),
+
+              Positioned.fill(child: MessagesListWidget()),
+
               Positioned(
                 left: 16,
                 right: 16,
                 bottom: 50,
                 child: TextInputWidget(),
+              ),
+
+              Positioned(
+                left: 16,
+                right: 16,
+                bottom: 120,
+                child: LoadingViewWidget(),
               ),
             ],
           );
