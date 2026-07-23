@@ -1,10 +1,11 @@
-import 'package:chat_app/features/chat/cubit/chat_cubit.dart';
-import 'package:chat_app/service/service_locator.dart';
+ 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../features/chat/chat_screen.dart';
+import '../features/chat/cubit/chat_cubit.dart';
 import '../features/splash_screen.dart';
+import '../service/service_locator.dart';
 import 'paths.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -41,7 +42,12 @@ class AppPages {
     routes: [
       GoRoute(
         path: AppPaths.initial,
-        builder: (context, state) => const SplashScreen(),
+        builder: (context, state) {
+          Future.delayed(const Duration(seconds: 3), () {
+            navigatorKey.currentContext!.go(AppPaths.chat);
+          });
+          return const SplashScreen();
+        },
       ),
       GoRoute(
         path: AppPaths.chat,
