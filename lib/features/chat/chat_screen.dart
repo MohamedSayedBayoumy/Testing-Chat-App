@@ -21,7 +21,7 @@ class ChatScreen extends StatelessWidget {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text("Please wait, your message is being sent..."),
-                backgroundColor: Colors.red,
+                backgroundColor: Colors.red.shade500,
               ),
             );
           }
@@ -29,7 +29,6 @@ class ChatScreen extends StatelessWidget {
         builder: (context, state) {
           return Stack(
             children: [
-
               Positioned.fill(child: MessagesListWidget()),
 
               Positioned(

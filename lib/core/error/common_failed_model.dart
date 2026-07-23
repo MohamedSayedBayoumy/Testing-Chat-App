@@ -75,8 +75,8 @@ class DioFailure extends CommonFailedModel {
         log("DioExceptionType.badResponse");
 
         return DioFailure(
-          failureMessageTitle: "serverMessageTitle",
-          failureMessage: 'errors.bad_response',
+          failureMessageTitle: "Failed",
+          failureMessage: exception?.response?.data["error"]["message"],
           modelException: exception!,
         );
       case DioExceptionType.cancel:

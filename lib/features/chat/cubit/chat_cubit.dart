@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,24 +24,18 @@ class ChatCubit extends Cubit<ChatState> {
   StreamController<bool> sendMessageController =
       StreamController<bool>.broadcast();
 
-  MessageModel currentMessage = MessageModel(
-    parts: [PartModel(text: '')],
-    role: 'user',
-  );
-
   Timer? _debounce;
 
   void startListening() {
     messageController.addListener(() {
       if (_debounce?.isActive ?? false) _debounce?.cancel();
 
-      _debounce = Timer(const Duration(milliseconds: 200), () {
+      _debounce = Timer(const Duration(milliseconds: 100), () {
         if (messageController.text.isEmpty) {
           sendMessageController.add(false);
         } else {
           sendMessageController.add(true);
         }
-        currentMessage.parts![0].text = messageController.text;
       });
     });
   }
@@ -50,8 +45,13 @@ class ChatCubit extends Cubit<ChatState> {
       emit(WaitingForResponse());
       return;
     }
-    messages.add(currentMessage);
-    requestBody = GeminiRequestBody(contents: [currentMessage]);
+    messages.add(
+      MessageModel(
+        parts: [PartModel(text: messageController.text)],
+        role: "user",
+      ),
+    );
+    requestBody = GeminiRequestBody(contents: [messages.last]);
 
     String userMessage = messageController.text;
 
@@ -70,6 +70,10 @@ class ChatCubit extends Cubit<ChatState> {
         final responseMessage = response.candidates!.first.content!;
 
         messages.add(responseMessage);
+
+        for (var messagePart in messages) {
+          log("Response: ${messagePart.toJson()}");
+        }
 
         emit(MessageSended());
       },

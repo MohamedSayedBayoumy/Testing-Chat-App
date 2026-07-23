@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:chat_app/service/service_locator.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
@@ -25,6 +27,7 @@ class ChatRepositoryImpl implements ChatRepository {
 
       return Right(GeminiResponse.fromJson(response.data));
     } on DioException catch (e) {
+      log("message: ${e.response?.data["error"]["message"]}");
       return Left(DioFailure.fromDioException(dioType: e.type, exception: e));
     }
   }
