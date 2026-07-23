@@ -13,6 +13,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(title: 'Chat App', routerConfig: AppPages.router);
+    return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
+      title: 'Chat App',
+      theme: ThemeData(
+        useMaterial3: false,
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+      ),
+      routerConfig: AppPages.router,
+    );
   }
 }
