@@ -26,14 +26,20 @@ class ChatCubit extends Cubit<ChatState> {
     role: 'user',
   );
 
+  Timer? _debounce;
+
   void startListening() {
     messageController.addListener(() {
-      if (messageController.text.isEmpty) {
-        sendMessageController.add(false);
-      } else {
-        sendMessageController.add(true);
-      }
-      currentMessage.parts![0].text = messageController.text;
+      if (_debounce?.isActive ?? false) _debounce?.cancel();
+
+      _debounce = Timer(const Duration(milliseconds: 500), () {
+        if (messageController.text.isEmpty) {
+          sendMessageController.add(false);
+        } else {
+          sendMessageController.add(true);
+        }
+        currentMessage.parts![0].text = messageController.text;
+      });
     });
   }
 
@@ -55,5 +61,11 @@ class ChatCubit extends Cubit<ChatState> {
         emit(MessageSended());
       },
     );
+  }
+
+  void dispose() {
+    _debounce?.cancel();
+    messageController.dispose();
+    sendMessageController.close();
   }
 }
