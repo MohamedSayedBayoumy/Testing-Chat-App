@@ -52,14 +52,16 @@ class ChatCubit extends Cubit<ChatState> {
       ),
     );
 
-    if (requestBody != null) {
-      if (requestBody!.contents!.length > 2) {
-        requestBody!.contents!.removeAt(0);
-      }
-      requestBody!.contents!.add(messages.last);
-    } else {
-      requestBody = GeminiRequestBody(contents: [messages.last]);
-    }
+    getLastMessages();
+
+    // if (requestBody != null) {
+    //   if (requestBody!.contents!.length > 2) {
+    //     requestBody!.contents!.removeAt(0);
+    //   }
+    //   requestBody!.contents!.add(messages.last);
+    // } else {
+    //   requestBody = GeminiRequestBody(contents: [messages.last]);
+    // }
 
     String userMessage = messageController.text;
 
@@ -79,8 +81,6 @@ class ChatCubit extends Cubit<ChatState> {
 
         messages.add(responseMessage);
 
-        requestBody!.contents!.add(responseMessage);
-
         // for (int i = 0; i < messages.length; i++) {
         //   final messagePart = messages[i];
         //   log("Response: ${messagePart.toJson()["role"]} - $i");
@@ -89,6 +89,14 @@ class ChatCubit extends Cubit<ChatState> {
         emit(MessageSended());
       },
     );
+  }
+
+  void getLastMessages() {
+    var lastMessages = messages.sublist(
+      messages.length > 3 ? messages.length - 3 : 0,
+      messages.length,
+    );
+    requestBody = GeminiRequestBody(contents: lastMessages);
   }
 
   void dispose() {

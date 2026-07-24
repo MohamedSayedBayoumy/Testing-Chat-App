@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:chat_app/service/service_locator.dart';
+import 'package:chat_app/core/network/dio_services.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 
@@ -15,15 +15,24 @@ abstract class ChatRepository {
 }
 
 class ChatRepositoryImpl implements ChatRepository {
+  final DioServices dioServices;
+
+  const ChatRepositoryImpl(this.dioServices);
+
   @override
   Future<Either<CommonFailedModel, GeminiResponse>> sendMessage(
     GeminiRequestBody messages,
   ) async {
     try {
-      final response = await serviceLocator<Dio>().post(
+      final response = await dioServices.dio.post(
         'gemini-flash-latest:generateContent',
         data: messages.toJson(),
       );
+
+      // final response = await serviceLocator<Dio>().post(
+      //   'gemini-flash-latest:generateContent',
+      //   data: messages.toJson(),
+      // );
 
       return Right(GeminiResponse.fromJson(response.data));
     } on DioException catch (e) {
