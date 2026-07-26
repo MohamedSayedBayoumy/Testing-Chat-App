@@ -52,23 +52,16 @@ class ChatCubit extends Cubit<ChatState> {
       ),
     );
 
-    getLastMessages();
+    // getLastMessages();
 
-    // if (requestBody != null) {
-    //   if (requestBody!.contents!.length > 2) {
-    //     requestBody!.contents!.removeAt(0);
-    //   }
-    //   requestBody!.contents!.add(messages.last);
-    // } else {
-    //   requestBody = GeminiRequestBody(contents: [messages.last]);
-    // }
+    requestBody = GeminiRequestBody(contents: messages);
 
     String userMessage = messageController.text;
 
     messageController.clear();
 
     emit(MessageSending());
-    final result = await chatRepository.sendMessage(requestBody!);
+    final result = await chatRepository.sendMessage(requestBody: requestBody!);
     result.fold(
       (failure) {
         messages.removeLast();

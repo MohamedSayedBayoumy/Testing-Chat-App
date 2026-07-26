@@ -12,6 +12,96 @@ abstract class AppUtils {
       ],
     ),
     MessageModel(
+      role: 'user',
+      parts: [
+        PartModel(
+          text:
+              'What are the best practices for high-level system design in mobile applications?',
+        ),
+      ],
+    ),
+    MessageModel(
+      role: 'user',
+      parts: [
+        PartModel(
+          text:
+              'What are the best practices for high-level system design in mobile applications?',
+        ),
+      ],
+    ),
+    MessageModel(
+      role: 'user',
+      parts: [
+        PartModel(
+          text:
+              'What are the best practices for high-level system design in mobile applications?',
+        ),
+      ],
+    ),
+    MessageModel(
+      role: 'user',
+      parts: [
+        PartModel(
+          text:
+              'What are the best practices for high-level system design in mobile applications?',
+        ),
+      ],
+    ),
+    MessageModel(
+      role: 'user',
+      parts: [
+        PartModel(
+          text:
+              'What are the best practices for high-level system design in mobile applications?',
+        ),
+      ],
+    ),
+    MessageModel(
+      role: 'user',
+      parts: [
+        PartModel(
+          text:
+              'What are the best practices for high-level system design in mobile applications?',
+        ),
+      ],
+    ),
+    MessageModel(
+      role: 'user',
+      parts: [
+        PartModel(
+          text:
+              'What are the best practices for high-level system design in mobile applications?',
+        ),
+      ],
+    ),
+    MessageModel(
+      role: 'user',
+      parts: [
+        PartModel(
+          text:
+              'What are the best practices for high-level system design in mobile applications?',
+        ),
+      ],
+    ),
+    MessageModel(
+      role: 'user',
+      parts: [
+        PartModel(
+          text:
+              'What are the best practices for high-level system design in mobile applications?',
+        ),
+      ],
+    ),
+    MessageModel(
+      role: 'user',
+      parts: [
+        PartModel(
+          text:
+              'What are the best practices for high-level system design in mobile applications?',
+        ),
+      ],
+    ),
+    MessageModel(
       role: 'model',
       parts: [
         PartModel(
