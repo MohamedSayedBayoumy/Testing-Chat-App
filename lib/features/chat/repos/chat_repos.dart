@@ -1,7 +1,7 @@
+import 'package:chat_app/core/services/chat_services.dart';
 import 'package:dartz/dartz.dart';
 
 import '../../../core/error/common_failed_model.dart';
-import '../../../core/network/dio_services.dart';
 import '../models/gemini_response_model.dart';
 import '../models/gemini_request_model.dart';
 
@@ -12,9 +12,9 @@ abstract class ChatRepository {
 }
 
 class ChatRepositoryImpl implements ChatRepository {
-  final DioServices dioServices;
+  final GeminiChatServices geminiChatServices;
 
-  const ChatRepositoryImpl(this.dioServices);
+  const ChatRepositoryImpl(this.geminiChatServices);
 
   @override
   Future<Either<CommonFailedModel, GeminiResponse>> sendMessage({
@@ -26,6 +26,6 @@ class ChatRepositoryImpl implements ChatRepository {
       );
     }
 
-    return dioServices.sendMessage(requestBody: requestBody);
+    return geminiChatServices.sendMessage(requestBody: requestBody);
   }
 }

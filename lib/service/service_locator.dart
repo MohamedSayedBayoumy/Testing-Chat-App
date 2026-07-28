@@ -1,3 +1,4 @@
+import 'package:chat_app/core/services/chat_services.dart';
 import 'package:get_it/get_it.dart';
 
 import '../core/network/dio_services.dart';
@@ -12,8 +13,12 @@ class DI {
 
     serviceLocator.registerFactory<DioServices>(() => DioServices());
 
+    serviceLocator.registerFactory<GeminiChatServices>(
+      () => GeminiChatServices(serviceLocator<DioServices>()),
+    );
+
     serviceLocator.registerFactory<ChatRepository>(
-      () => ChatRepositoryImpl(serviceLocator<DioServices>()),
+      () => ChatRepositoryImpl(serviceLocator<GeminiChatServices>()),
     );
 
     serviceLocator.registerFactory<ChatCubit>(

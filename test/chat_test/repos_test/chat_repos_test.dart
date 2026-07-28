@@ -1,4 +1,4 @@
-import 'package:chat_app/core/network/dio_services.dart';
+import 'package:chat_app/core/services/chat_services.dart';
 import 'package:chat_app/features/chat/models/gemini_request_model.dart';
 import 'package:chat_app/features/chat/models/gemini_response_model.dart';
 import 'package:chat_app/features/chat/models/message_model.dart';
@@ -7,7 +7,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-class DioServicesMock extends Mock implements DioServices {}
+class DioServicesMock extends Mock implements GeminiChatServices {}
 
 class GeminiRequestBodyFake extends Fake implements GeminiRequestBody {}
 
@@ -32,11 +32,11 @@ GeminiResponse _responseModel() {
 
 void main() {
   late ChatRepositoryImpl chatRepositoryImpl;
-  late DioServicesMock dioServicesMock;
-  
+  late GeminiChatServices geminiChatServices;
+
   setUp(() {
-    dioServicesMock = DioServicesMock();
-    chatRepositoryImpl = ChatRepositoryImpl(dioServicesMock);
+    geminiChatServices = DioServicesMock();
+    chatRepositoryImpl = ChatRepositoryImpl(geminiChatServices);
   });
 
   setUpAll(() {
@@ -48,7 +48,7 @@ void main() {
       "Test When messages length doesn't change if length have less than or equal 20",
       () async {
         when(
-          () => dioServicesMock.sendMessage(
+          () => geminiChatServices.sendMessage(
             requestBody: any(named: "requestBody"),
           ),
         ).thenAnswer((_) async => Right(_responseModel()));
@@ -72,7 +72,7 @@ void main() {
 
         final actualMessagesLength =
             verify(
-                  () => dioServicesMock.sendMessage(
+                  () => geminiChatServices.sendMessage(
                     requestBody: captureAny(named: "requestBody"),
                   ),
                 ).captured.first
