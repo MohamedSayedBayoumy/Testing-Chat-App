@@ -1,3 +1,4 @@
+import 'package:chat_app/core/error/common_failed_model.dart';
 import 'package:chat_app/core/network/dio_services.dart';
 import 'package:chat_app/core/services/chat_services.dart';
 import 'package:chat_app/features/chat/models/gemini_request_model.dart';
@@ -42,6 +43,16 @@ Response _response() => Response(
     "modelVersion": "gemini-3.6-flash",
     "responseId": "z3NnatCdJZeF-8YP58DrsQU",
   },
+  requestOptions: RequestOptions(),
+);
+
+DioException _retryableDioException() => DioException(
+  type: DioExceptionType.sendTimeout,
+  requestOptions: RequestOptions(),
+);
+
+DioException _nonRetryableDioException() => DioException(
+  type: DioExceptionType.cancel,
   requestOptions: RequestOptions(),
 );
 
@@ -91,5 +102,123 @@ void main() {
         },
       );
     });
+
+    test(
+      "Failed First Time if exception is from Retryable Type will try again then Succeeded Second From Time",
+      () async {
+        int counter = 0;
+        when(
+          () => dioServicesTest.post(
+            path: any(named: "path"),
+            data: any(named: "data"),
+          ),
+        ).thenAnswer((_) async {
+          counter++;
+          if (counter == 1) {
+            throw _retryableDioException();
+          }
+
+          return _response();
+        });
+
+        final requestBodyModel = GeminiRequestBody(contents: []);
+
+        final result = await geminiChatServices.sendMessage(
+          requestBody: requestBodyModel,
+        );
+
+        final callCount = verify(
+          () => dioServicesTest.post(
+            path: any(named: "path"),
+            data: any(named: "data"),
+          ),
+        ).callCount;
+
+        expect(callCount, 2);
+
+        result.fold(
+          (left) {
+            fail("Expected Right (Success) but got Left (Error): $left");
+          },
+          (right) {
+            expect(right, isA<GeminiResponse>());
+          },
+        );
+      },
+    );
+
+    test("Failed First Time", () async {
+      when(
+        () => dioServicesTest.post(
+          path: any(named: "path"),
+          data: any(named: "data"),
+        ),
+      ).thenAnswer((_) async {
+        throw _nonRetryableDioException();
+      });
+
+      final requestBodyModel = GeminiRequestBody(contents: []);
+
+      final result = await geminiChatServices.sendMessage(
+        requestBody: requestBodyModel,
+      );
+
+      final callCount = verify(
+        () => dioServicesTest.post(
+          path: any(named: "path"),
+          data: any(named: "data"),
+        ),
+      ).callCount;
+
+      expect(callCount, 1);
+
+      result.fold((left) {
+        expect(left, isA<CommonFailedModel>());
+      }, (right) {});
+    });
+
+    test(
+      "Failed First and Second Time if exception is from Retryable Type will try again then Succeeded Third From Time",
+      () async {
+        int counter = 0;
+        when(
+          () => dioServicesTest.post(
+            path: any(named: "path"),
+            data: any(named: "data"),
+          ),
+        ).thenAnswer((_) async {
+          counter++;
+          if (counter == 3) {
+            return _response();
+          }
+
+          throw _retryableDioException();
+        });
+
+        final requestBodyModel = GeminiRequestBody(contents: []);
+
+        final result = await geminiChatServices.sendMessage(
+          requestBody: requestBodyModel,
+        );
+
+        final callCount = verify(
+          () => dioServicesTest.post(
+            path: any(named: "path"),
+            data: any(named: "data"),
+          ),
+        ).callCount;
+
+        expect(callCount, 3);
+
+        result.fold(
+          (left) {
+            fail("Expected Right (Success) but got Left (Error): $left");
+          },
+          (right) {
+            expect(right, isA<GeminiResponse>());
+          },
+        );
+      },
+    );
   });
 }

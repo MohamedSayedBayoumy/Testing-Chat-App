@@ -24,11 +24,16 @@ class GeminiChatServices {
 
         return Right(GeminiResponse.fromJson(response.data));
       } on DioException catch (e) {
+        // this mean => if not of any from _isRetryableDioException Close Fun Direct
         if (!_isRetryableDioException(e)) {
-          // this mean => if not of any from _isRetryableDioException Close Fun Direct
-          rethrow;
+          // rethrow;
+          //rethrow: بتقول للدالة "اقفلي واخرجي بطوارئ وارمي الإيرور ده في وش اللي نادانا".
           // rethrow :mean Stop any thing and go out
           // we will stop this function if Dio Exception in not type of _isRetryableDioException
+
+          return Left(
+            DioFailure.fromDioException(dioType: e.type, exception: e),
+          );
         }
         exception = e;
         if (i < 2) {
