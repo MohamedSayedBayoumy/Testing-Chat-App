@@ -33,7 +33,6 @@ migrate_working_dir/
 /build/
 /coverage/
 
-
 # Symbolication related
 app.*.symbols
 
@@ -46,4 +45,5 @@ app.*.map.json
 /android/app/release
 # **/dio_services.dart
 
-
+# FVM Version Cache
+.fvm/
