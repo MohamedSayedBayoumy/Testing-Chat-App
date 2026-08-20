@@ -28,6 +28,7 @@ class TextInputWidget extends StatelessWidget {
         children: [
           Expanded(
             child: TextField(
+              key: const Key('text_field'),
               controller: cubit.messageController,
               decoration: const InputDecoration(
                 hintText: 'Write your message',
@@ -49,6 +50,7 @@ class TextInputWidget extends StatelessWidget {
             stream: cubit.sendMessageController.stream,
             builder: (context, snapshot) {
               return IconButton(
+                key: const Key('send_icon'),
                 icon: Icon(
                   Icons.send,
                   color: snapshot.data == true
