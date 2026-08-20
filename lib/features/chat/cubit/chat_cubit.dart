@@ -52,7 +52,6 @@ class ChatCubit extends Cubit<ChatState> {
       ),
     );
 
-    // getLastMessages();
 
     requestBody = GeminiRequestBody(contents: messages);
 

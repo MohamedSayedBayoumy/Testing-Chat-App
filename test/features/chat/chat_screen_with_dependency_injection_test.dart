@@ -1,19 +1,15 @@
-import 'dart:async';
-
 import 'package:chat_app/features/chat/chat_screen.dart';
 import 'package:chat_app/features/chat/cubit/chat_cubit.dart';
 import 'package:chat_app/features/chat/models/gemini_request_model.dart';
 import 'package:chat_app/features/chat/models/gemini_response_model.dart';
 import 'package:chat_app/features/chat/models/message_model.dart';
 import 'package:chat_app/features/chat/repos/chat_repos.dart';
+import 'package:chat_app/service/service_locator.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:bloc_test/bloc_test.dart';
 import 'package:mocktail/mocktail.dart';
-
-class MockChatCubit extends MockCubit<ChatState> implements ChatCubit {}
 
 class ChatRepositoryMock extends Mock implements ChatRepository {}
 
@@ -31,20 +27,21 @@ GeminiResponse _geminiResponse() => GeminiResponse(
 );
 
 void main() {
-  late MockChatCubit mockCubit;
-
   late ChatRepositoryMock chatRepositoryMock;
 
   setUpAll(() {
     registerFallbackValue(GeminiRequestBodyFake());
   });
 
-  setUp(() {
-    mockCubit = MockChatCubit();
+  setUp(() async {
     chatRepositoryMock = ChatRepositoryMock();
+
+    await serviceLocator.reset();
+
+    serviceLocator.registerSingleton<ChatCubit>(ChatCubit(chatRepositoryMock));
   });
-  group("Chat Screen Test", () {
-    testWidgets('Test Loading Case ...', (tester) async {
+  group("Test Chat Screen", () {
+    testWidgets('Loading Case ...', (tester) async {
       when(
         () => chatRepositoryMock.sendMessage(
           requestBody: any(named: "requestBody"),
@@ -55,24 +52,10 @@ void main() {
         });
       });
 
-      final testController = TextEditingController();
-
-      final streamControllerMock = StreamController<bool>.broadcast();
-
-      when(
-        () => mockCubit.sendMessageController,
-      ).thenReturn(streamControllerMock);
-
-      when(() => mockCubit.messageController).thenReturn(testController);
-
-      when(() => mockCubit.state).thenReturn(MessageSending());
-
-      when(() => mockCubit.messages).thenReturn([]);
-
       await tester.pumpWidget(
         MaterialApp(
-          home: BlocProvider<ChatCubit>.value(
-            value: mockCubit,
+          home: BlocProvider<ChatCubit>(
+            create: (context) => serviceLocator<ChatCubit>()..startListening(),
             child: ChatScreen(),
           ),
         ),
@@ -84,18 +67,19 @@ void main() {
 
       await tester.enterText(textField, "Hello");
 
-      await tester.pump();
-
+      // this timer cause we have startListening() it listen to text filed every milliseconds: 100 
+      await tester.pump(const Duration(milliseconds: 150));
 
       final sendIcon = find.byKey(Key('send_icon'));
 
       await tester.tap(sendIcon);
 
       await tester.pump();
-
       final loadingFiled = find.byType(CircleAvatar);
 
       expect(loadingFiled, findsOneWidget);
+
+      await tester.pumpAndSettle(const Duration(seconds: 4));
     });
   });
 }
