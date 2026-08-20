@@ -74,11 +74,6 @@ class ChatCubit extends Cubit<ChatState> {
 
         messages.add(responseMessage);
 
-        // for (int i = 0; i < messages.length; i++) {
-        //   final messagePart = messages[i];
-        //   log("Response: ${messagePart.toJson()["role"]} - $i");
-        // }
-
         emit(MessageSended());
       },
     );
