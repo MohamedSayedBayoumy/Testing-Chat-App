@@ -1,10 +1,11 @@
-import 'package:chat_app/core/network/dio_services.dart';
+
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 
 import '../../features/chat/models/gemini_request_model.dart';
 import '../../features/chat/models/gemini_response_model.dart';
 import '../error/common_failed_model.dart';
+import '../network/dio_services.dart';
 
 class GeminiChatServices {
   final DioServices dioServices;
@@ -30,7 +31,6 @@ class GeminiChatServices {
           //rethrow: بتقول للدالة "اقفلي واخرجي بطوارئ وارمي الإيرور ده في وش اللي نادانا".
           // rethrow :mean Stop any thing and go out
           // we will stop this function if Dio Exception in not type of _isRetryableDioException
-
           return Left(
             DioFailure.fromDioException(dioType: e.type, exception: e),
           );
@@ -41,7 +41,12 @@ class GeminiChatServices {
         }
       }
     }
-    throw exception!;
+    return Left(
+      DioFailure.fromDioException(
+        dioType: (exception as DioException).type,
+        exception: exception,
+      ),
+    );
   }
 
   bool _isRetryableDioException(DioException e) {
@@ -50,13 +55,13 @@ class GeminiChatServices {
       case DioExceptionType.sendTimeout:
       case DioExceptionType.receiveTimeout:
       case DioExceptionType.transformTimeout:
-      case DioExceptionType.connectionError:
         return true;
       case DioExceptionType.badResponse:
         final code = e.response?.statusCode;
         if (code == null) return false;
         return code == 408 || code == 429 || (code >= 500 && code < 600);
       case DioExceptionType.cancel:
+      case DioExceptionType.connectionError:
       case DioExceptionType.badCertificate:
         return false;
       case DioExceptionType.unknown:
