@@ -19,4 +19,12 @@ class GeminiRequestBody {
       'contents': contents?.map((e) => e.toJson()).toList(),
     };
   }
+
+  GeminiRequestBody copyWith({
+    List<MessageModel>? contents,
+  }) {
+    return GeminiRequestBody(
+      contents: contents ?? this.contents,
+    );
+  }
 }

@@ -9,6 +9,9 @@ abstract class ChatRepository {
   Future<Either<CommonFailedModel, GeminiResponse>> sendMessage({
     required GeminiRequestBody requestBody,
   });
+
+
+
 }
 
 class ChatRepositoryImpl implements ChatRepository {
@@ -17,6 +20,9 @@ class ChatRepositoryImpl implements ChatRepository {
   const ChatRepositoryImpl(this.geminiChatServices);
 
   @override
+
+
+  
   Future<Either<CommonFailedModel, GeminiResponse>> sendMessage({
     required GeminiRequestBody requestBody,
   }) async {

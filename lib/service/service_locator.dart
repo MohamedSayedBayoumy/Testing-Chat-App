@@ -24,5 +24,6 @@ class DI {
     serviceLocator.registerFactory<ChatCubit>(
       () => ChatCubit(serviceLocator<ChatRepository>()),
     );
+    
   }
 }

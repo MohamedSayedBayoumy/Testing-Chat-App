@@ -40,6 +40,7 @@ class AppPages {
     initialLocation: AppPaths.initial,
     observers: [myObserver],
     routes: [
+
       GoRoute(
         path: AppPaths.initial,
         builder: (context, state) {
@@ -49,6 +50,7 @@ class AppPages {
           return const SplashScreen();
         },
       ),
+      
       GoRoute(
         path: AppPaths.chat,
         builder: (context, state) => BlocProvider<ChatCubit>(
