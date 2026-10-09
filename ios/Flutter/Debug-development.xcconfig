@@ -1,0 +1,6 @@
+﻿// Development Debug configuration
+// Overrides the bundle identifier and display name for the development flavor.
+#include "Generated.xcconfig"
+FLUTTER_TARGET=lib/main_dev.dart
+PRODUCT_BUNDLE_IDENTIFIER=com.example.chatApp.dev
+PRODUCT_NAME=Chat Dev

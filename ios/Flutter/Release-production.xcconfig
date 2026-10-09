@@ -1,0 +1,5 @@
+﻿// Production Release configuration
+#include "Generated.xcconfig"
+FLUTTER_TARGET=lib/main_prod.dart
+PRODUCT_BUNDLE_IDENTIFIER=com.example.chatApp
+PRODUCT_NAME=Chat

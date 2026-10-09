@@ -1,0 +1,29 @@
+// يا محمد الملف دا مينفعش انو يترفع انا رفعهولك بس عشان تكون فاكره اتفقنا ؟؟؟ 
+
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Development",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main_dev.dart",
+      "args": [
+        "--flavor", "development",
+        "--dart-define=GEMINI_API_KEY_DEV=YOUR_DEV_API_KEY_HERE"
+        // Replace YOUR_DEV_API_KEY_HERE with your dev API key
+      ]
+    },
+    {
+      "name": "Production",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main_prod.dart",
+      "args": [
+        "--flavor", "production",
+        "--dart-define=GEMINI_API_KEY_PROD=YOUR_PROD_API_KEY_HERE",
+        
+      ]
+    }
+  ]
+}
