@@ -1,0 +1,69 @@
+name: Build Development Artifacts (Android & iOS)
+
+on:
+  push:
+    branches: [ "final" ]
+
+jobs:
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Android Development
+  # ─────────────────────────────────────────────────────────────────────────────
+  build_android_dev:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.44.7'
+          cache: true
+          cache-dependency-path: pubspec.lock
+
+      - name: Install Dependencies
+        run: flutter pub get
+
+      - name: Build APK (Development)
+        run: flutter build apk --release --flavor development --target lib/main_dev.dart --dart-define=GEMINI_API_KEY_DEV=${{ secrets.GEMINI_API_KEY_DEV }}
+
+      - name: Build AppBundle (Development)
+        run: flutter build appbundle --release --flavor development --target lib/main_dev.dart --dart-define=GEMINI_API_KEY_DEV=${{ secrets.GEMINI_API_KEY_DEV }}
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-development-apk
+          path: build/app/outputs/flutter-apk/app-development-release.apk
+
+      - name: Upload AAB Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-development-aab
+          path: build/app/outputs/bundle/developmentRelease/app-development-release.aab
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # iOS Development
+  # ─────────────────────────────────────────────────────────────────────────────
+  build_ios_dev:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.44.7'
+          cache: true
+          cache-dependency-path: pubspec.lock
+
+      - name: Install Dependencies
+        run: flutter pub get
+
+      - name: Build IPA (Development)
+        run: flutter build ipa --release --no-codesign --flavor development --target lib/main_dev.dart --dart-define=GEMINI_API_KEY_DEV=${{ secrets.GEMINI_API_KEY_DEV }}
+
+      - name: Upload IPA Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-development-ipa
+          path: build/ios/ipa/*.ipa

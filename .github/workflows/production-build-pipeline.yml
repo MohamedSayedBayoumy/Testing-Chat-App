@@ -1,0 +1,69 @@
+name: Build Production Artifacts (Android & iOS)
+
+on:
+  push:
+    branches: [ "refact-based-course" ]
+
+jobs:
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Android Production
+  # ─────────────────────────────────────────────────────────────────────────────
+  build_android_prod:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.44.7'
+          cache: true
+          cache-dependency-path: pubspec.lock
+
+      - name: Install Dependencies
+        run: flutter pub get
+
+      - name: Build APK (Production)
+        run: flutter build apk --release --flavor production --target lib/main_prod.dart --obfuscate --split-debug-info=build/symbols --dart-define=GEMINI_API_KEY_PROD=${{ secrets.GEMINI_API_KEY_PROD }}
+
+      - name: Build AppBundle (Production)
+        run: flutter build appbundle --release --flavor production --target lib/main_prod.dart --obfuscate --split-debug-info=build/symbols --dart-define=GEMINI_API_KEY_PROD=${{ secrets.GEMINI_API_KEY_PROD }}
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-production-apk
+          path: build/app/outputs/flutter-apk/app-production-release.apk
+
+      - name: Upload AAB Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-production-aab
+          path: build/app/outputs/bundle/productionRelease/app-production-release.aab
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # iOS Production
+  # ─────────────────────────────────────────────────────────────────────────────
+  build_ios_prod:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.44.7'
+          cache: true
+          cache-dependency-path: pubspec.lock
+
+      - name: Install Dependencies
+        run: flutter pub get
+
+      - name: Build IPA (Production)
+        run: flutter build ipa --release --no-codesign --flavor production --target lib/main_prod.dart --obfuscate --split-debug-info=build/symbols --dart-define=GEMINI_API_KEY_PROD=${{ secrets.GEMINI_API_KEY_PROD }}
+
+      - name: Upload IPA Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-production-ipa
+          path: build/ios/ipa/*.ipa
