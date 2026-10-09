@@ -1,8 +1,7 @@
 name: Build Development Artifacts (Android & iOS)
 
 on:
-  push:
-    branches: [ "final" ]
+  workflow_dispatch:
 
 jobs:
   # ─────────────────────────────────────────────────────────────────────────────
