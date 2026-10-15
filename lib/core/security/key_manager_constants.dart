@@ -1,8 +1,9 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-const MethodChannel keyManagerChannel =
-    MethodChannel('com.example.chat_app/key_manager');
+const MethodChannel keyManagerChannel = MethodChannel(
+  'com.cte.chat/key_manager',
+);
 
 const String publicKeyStorageKey = 'mtls_public_key_pem';
 

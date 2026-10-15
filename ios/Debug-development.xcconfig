@@ -1,0 +1,6 @@
+#include "Flutter/Debug.xcconfig"
+
+// Development Debug configuration
+FLUTTER_TARGET=lib/main_dev.dart
+PRODUCT_BUNDLE_IDENTIFIER=com.cte.chat.dev
+PRODUCT_NAME=Chat Dev

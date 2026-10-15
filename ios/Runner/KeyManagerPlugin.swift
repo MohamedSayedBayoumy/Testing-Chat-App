@@ -3,7 +3,7 @@ import UIKit
 import Security
 import CryptoKit
 
-/// Handles the `com.example.chat_app/key_manager` Flutter MethodChannel.
+/// Handles the `com.cte.chat/key_manager` Flutter MethodChannel.
 ///
 /// Supported methods:
 /// - `generateKeyPair`  { alias: String, requireAuth: Bool } → String (PEM public key)
@@ -15,7 +15,7 @@ import CryptoKit
 /// on physical devices, with a safe fallback to the system Keychain on Simulators.
 @objc class KeyManagerPlugin: NSObject, FlutterPlugin {
 
-    private static let channelName = "com.example.chat_app/key_manager"
+    private static let channelName = "com.cte.chat/key_manager"
     private static let defaultAlias = "mtls_client_key"
 
     // MARK: - Registration

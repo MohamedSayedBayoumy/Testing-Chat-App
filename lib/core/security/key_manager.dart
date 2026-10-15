@@ -55,7 +55,8 @@ abstract final class KeyManager {
     if (!keyExists) {
       log('--- 2. Generating new EC P-256 Key Pair in Hardware ---');
       final genResult = await KeyManager.generateAndStoreKeyPair(
-        requireAuth: AppConfig.isDevelopment ? false : true,
+        requireAuth: true,
+        // requireAuth: AppConfig.isDevelopment ? false : true,
       );
       genResult.fold(
         (failure) => log(

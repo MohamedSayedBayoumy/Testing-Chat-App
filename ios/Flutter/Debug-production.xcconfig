@@ -1,5 +1,6 @@
-﻿// Production Debug configuration
-#include "Generated.xcconfig"
+#include "Debug.xcconfig"
+
+// Production Debug configuration
 FLUTTER_TARGET=lib/main_prod.dart
-PRODUCT_BUNDLE_IDENTIFIER=com.example.chatApp
+PRODUCT_BUNDLE_IDENTIFIER=com.cte.chat
 PRODUCT_NAME=Chat

@@ -1,4 +1,4 @@
-package com.example.chat_app
+package com.cte.chat
 
 import android.os.Build
 import android.security.keystore.KeyGenParameterSpec
@@ -32,7 +32,7 @@ class MainActivity : FlutterFragmentActivity() {
 }
 
 /**
- * Handles the `com.example.chat_app/key_manager` [MethodChannel].
+ * Handles the `com.cte.chat/key_manager` [MethodChannel].
  *
  * Supported methods:
  * - `generateKeyPair`  { alias: String, requireAuth: Boolean } → String (PEM public key)
@@ -47,7 +47,7 @@ class MainActivity : FlutterFragmentActivity() {
  */
 object KeyManagerPlugin : MethodChannel.MethodCallHandler {
 
-    private const val CHANNEL = "com.example.chat_app/key_manager"
+    private const val CHANNEL = "com.cte.chat/key_manager"
     private const val KEYSTORE_PROVIDER = "AndroidKeyStore"
     private const val DEFAULT_ALIAS = "mtls_client_key"
     private const val AUTH_VALIDITY_DURATION_SECONDS = 30
