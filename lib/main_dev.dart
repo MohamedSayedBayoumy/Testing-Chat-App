@@ -1,14 +1,22 @@
+
 import 'package:flutter/material.dart';
 
 import 'core/flavor/app_config.dart';
+import 'core/security/key_manager.dart';
 import 'routes/pages.dart';
 import 'service/service_locator.dart';
 
+
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   AppConfig.createDevelopment();
   await DI.execute();
+
+  await KeyManager.runSecurityLifecycleTest();
+
   runApp(const MyApp());
 }
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
