@@ -13,6 +13,9 @@ Future<void> main() async {
   await DI.execute();
 
   await KeyManager.runSecurityLifecycleTest();
+  await KeyManager.runSecurityLifecycleTest();
+  await KeyManager.runSecurityLifecycleTest();
+
 
   runApp(const MyApp());
 }
@@ -27,7 +30,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: AppConfig.isDevelopment,
       title: AppConfig.currentAppName,
       theme: ThemeData(
-        useMaterial3: true,
+        useMaterial3: false,
         colorScheme: ColorScheme.fromSeed(
           seedColor: Color(AppConfig.currentSeedColor),
         ),

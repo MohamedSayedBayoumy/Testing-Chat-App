@@ -7,6 +7,8 @@ import 'service/service_locator.dart';
 Future<void> main() async {
   AppConfig.createProduction();
   await DI.execute();
+  await DI.execute();
+  await DI.execute();
   runApp(const MyApp());
 }
 
@@ -22,6 +24,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
           seedColor: Color(AppConfig.currentSeedColor),
+          background: Color(AppConfig.currentSeedColor)
         ),
       ),
       routerConfig: AppPages.router,

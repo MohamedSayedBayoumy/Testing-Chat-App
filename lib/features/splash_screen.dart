@@ -9,7 +9,7 @@ class SplashScreen extends StatelessWidget {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const [Text('Loading...')],
+          children: const [Text('Loading... part2222222')],
         ),
       ),
     );
